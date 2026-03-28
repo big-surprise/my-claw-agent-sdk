@@ -1,4 +1,4 @@
-// claw-agent-sdk — Universal AI Agent SDK
+// my-claw-agent-sdk — Universal AI Agent SDK
 // Zero-cost abstraction for AI Agents
 
 export { Agent, agent } from "./agent.js"

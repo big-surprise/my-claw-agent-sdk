@@ -14,7 +14,7 @@ export function createWebFetchTool(): ToolDefinition {
     async execute(params) {
       const url = params.url as string
       const res = await fetch(url, {
-        headers: { "User-Agent": "claw-agent-sdk/0.1" },
+        headers: { "User-Agent": "my-claw-agent-sdk/0.1" },
         signal: AbortSignal.timeout(15_000),
       })
 

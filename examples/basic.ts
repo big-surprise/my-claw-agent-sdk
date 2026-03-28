@@ -1,5 +1,5 @@
 /**
- * claw-agent-sdk 基础示例
+ * my-claw-agent-sdk 基础示例
  *
  * 运行前设置环境变量：
  *   export DASHSCOPE_API_KEY=sk-xxx

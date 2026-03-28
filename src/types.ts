@@ -1,5 +1,5 @@
 // ============================================================
-// claw-agent-sdk — Core Type Definitions
+// my-claw-agent-sdk — Core Type Definitions
 // ============================================================
 
 /** 模型 Provider 配置 */

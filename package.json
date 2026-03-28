@@ -1,6 +1,6 @@
 {
-  "name": "claw-agent-sdk",
-  "version": "0.1.1",
+  "name": "my-claw-agent-sdk",
+  "version": "0.1.0",
   "description": "Universal AI Agent SDK for TypeScript — multi-model support with built-in tools, powered by any LLM.",
   "keywords": [
     "agent",
@@ -19,7 +19,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/anxiong2025/claw-agent-sdk"
+    "url": "https://github.com/big-surprise/my-claw-agent-sdk"
   },
   "type": "module",
   "main": "dist/index.cjs",
