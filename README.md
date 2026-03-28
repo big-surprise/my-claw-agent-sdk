@@ -1,9 +1,9 @@
-# claw-agent-sdk
+# my-claw-agent-sdk
 
 **通用 AI Agent SDK for TypeScript** — 像 Claude Agent SDK 一样强大，但支持所有模型。
 
 ```typescript
-import { agent } from "claw-agent-sdk"
+import { agent } from "my-claw-agent-sdk"
 
 const ai = agent({ provider: "qwen", apiKey: "sk-xxx" })
 const result = await ai.run("读取 src/index.ts 并找出性能瓶颈")
@@ -24,7 +24,7 @@ console.log(result.text)
 | LangChain.js | 太复杂，学习成本高 |
 | CrewAI | Python，Node.js 用不了 |
 
-**claw-agent-sdk 填补的空白：TypeScript 生态里唯一一个「多模型 + 内置工具 + 开箱即用」的 Agent SDK。**
+**my-claw-agent-sdk 填补的空白：TypeScript 生态里唯一一个「多模型 + 内置工具 + 开箱即用」的 Agent SDK。**
 
 ---
 
@@ -43,7 +43,7 @@ console.log(result.text)
 ## 安装
 
 ```bash
-npm install claw-agent-sdk
+npm install my-claw-agent-sdk
 ```
 
 ---
@@ -53,7 +53,7 @@ npm install claw-agent-sdk
 ### 基本对话
 
 ```typescript
-import { agent } from "claw-agent-sdk"
+import { agent } from "my-claw-agent-sdk"
 
 const ai = agent({
   provider: "deepseek",
@@ -94,7 +94,7 @@ for await (const chunk of ai.stream("解释这段代码的作用")) {
 ### 自定义工具
 
 ```typescript
-import { agent, defineTool } from "claw-agent-sdk"
+import { agent, defineTool } from "my-claw-agent-sdk"
 
 const weather = defineTool({
   name: "get_weather",
@@ -234,17 +234,17 @@ session.clear()
 
 ---
 
-## 与 wechat-ai 集成
+## 与 my-wechat-ai 集成
 
-claw-agent-sdk 是 [wechat-ai](https://github.com/anxiong2025/wechat-ai) 的底层 Agent 引擎：
+my-claw-agent-sdk 是 [my-wechat-ai](https://github.com/big-surprise/wechat-ai) 的底层 Agent 引擎：
 
 ```
-微信消息 → wechat-ai（网关）→ claw-agent-sdk（执行）→ 回复
+微信消息 → my-wechat-ai（网关）→ my-claw-agent-sdk（执行）→ 回复
 ```
 
 ```typescript
-// wechat-ai 内部使用示例
-import { agent } from "claw-agent-sdk"
+// my-wechat-ai 内部使用示例
+import { agent } from "my-claw-agent-sdk"
 
 const qwenAgent = agent({
   provider: "qwen",
@@ -263,15 +263,15 @@ const result = await qwenAgent.run(userMessage, { sessionId })
 | 场景 | 用哪个 |
 |---|---|
 | 需要最强 agent 能力 | Claude Agent SDK（`/cc`） |
-| 用国内模型 + agent 能力 | claw-agent-sdk（`/qwen` `/deepseek`） |
-| 纯对话，不需要工具 | claw-agent-sdk（tools: false） |
+| 用国内模型 + agent 能力 | my-claw-agent-sdk（`/qwen` `/deepseek`） |
+| 纯对话，不需要工具 | my-claw-agent-sdk（tools: false） |
 
 两者在 wechat-ai 中并存，用户通过命令切换：
 
 ```
 /cc       → Claude Agent SDK（Claude 专属，最强）
-/qwen     → claw-agent-sdk + 通义千问
-/deepseek → claw-agent-sdk + DeepSeek
+/qwen     → my-claw-agent-sdk + 通义千问
+/deepseek → my-claw-agent-sdk + DeepSeek
 ```
 
 ---
@@ -367,7 +367,7 @@ interface ToolDefinition {
 ## 架构
 
 ```
-claw-agent-sdk
+my-claw-agent-sdk
 ├── src/
 │   ├── index.ts              # 公共 API 导出
 │   ├── agent.ts              # Agent 主类
@@ -397,12 +397,7 @@ claw-agent-sdk
 
 ## Roadmap
 
-- [x] v0.1 — 核心 Agent 循环 + OpenAI 协议适配 + 内置工具
-- [ ] v0.2 — 流式输出 + 会话管理
-- [ ] v0.3 — MCP 工具扩展支持
-- [ ] v0.4 — Anthropic 协议直连
-- [ ] v0.5 — 多 Agent 协作
-- [ ] v1.0 — 稳定版发布
+- [x] v0.1 — 首版本
 
 ---
 
