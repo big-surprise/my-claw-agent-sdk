@@ -4,7 +4,7 @@ import type { ToolDefinition } from "../types.js"
  * Web Search 工具 — 使用 DuckDuckGo HTML 搜索
  * 零配置，不需要任何 API Key
  */
-export function createWebSearchTool(): ToolDefinition {
+export function createWebSearchTool(timeout = 10_000): ToolDefinition {
   return {
     name: "web_search",
     description:
@@ -23,10 +23,10 @@ export function createWebSearchTool(): ToolDefinition {
 
       // 尝试多个搜索源，确保可用性
       try {
-        return await duckduckgoSearch(query, count)
+        return await duckduckgoSearch(query, count, timeout)
       } catch {
         try {
-          return await duckduckgoLite(query, count)
+          return await duckduckgoLite(query, count, timeout)
         } catch (e) {
           return `Search failed: ${e instanceof Error ? e.message : String(e)}`
         }
@@ -36,7 +36,7 @@ export function createWebSearchTool(): ToolDefinition {
 }
 
 /** DuckDuckGo HTML 搜索 — 解析搜索结果页 */
-async function duckduckgoSearch(query: string, count: number): Promise<string> {
+async function duckduckgoSearch(query: string, count: number, timeout: number): Promise<string> {
   const url = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`
   const res = await fetch(url, {
     headers: {
@@ -45,7 +45,7 @@ async function duckduckgoSearch(query: string, count: number): Promise<string> {
       Accept: "text/html",
       "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8",
     },
-    signal: AbortSignal.timeout(10_000),
+    signal: AbortSignal.timeout(timeout),
   })
 
   if (!res.ok) throw new Error(`DuckDuckGo returned ${res.status}`)
@@ -54,7 +54,7 @@ async function duckduckgoSearch(query: string, count: number): Promise<string> {
 }
 
 /** DuckDuckGo Lite 搜索 — 备用 */
-async function duckduckgoLite(query: string, count: number): Promise<string> {
+async function duckduckgoLite(query: string, count: number, timeout: number): Promise<string> {
   const url = `https://lite.duckduckgo.com/lite/?q=${encodeURIComponent(query)}`
   const res = await fetch(url, {
     headers: {
@@ -62,7 +62,7 @@ async function duckduckgoLite(query: string, count: number): Promise<string> {
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
       Accept: "text/html",
     },
-    signal: AbortSignal.timeout(10_000),
+    signal: AbortSignal.timeout(timeout),
   })
 
   if (!res.ok) throw new Error(`DuckDuckGo Lite returned ${res.status}`)
