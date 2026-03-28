@@ -11,6 +11,20 @@ export interface ProviderConfig {
   apiKeyEnv?: string
 }
 
+/** 每个工具的个性化配置 */
+export interface ToolConfig {
+  /** 只允许这些工具（按名称） */
+  allow?: string[]
+  /** 禁止这些工具（按名称） */
+  deny?: string[]
+  /** bash 工具配置 */
+  bash?: { timeout?: number }
+  /** web_fetch 工具配置 */
+  web_fetch?: { timeout?: number }
+  /** web_search 工具配置 */
+  web_search?: { timeout?: number }
+}
+
 /** Agent 创建配置 */
 export interface AgentConfig {
   /** 模型名（预设）或自定义 Provider 配置 */
@@ -22,8 +36,14 @@ export interface AgentConfig {
   /** API 地址覆盖 */
   baseUrl?: string
 
-  /** 工具配置：true=全部内置工具，false=无工具，数组=指定工具名 */
-  tools?: boolean | string[] | ToolDefinition[]
+  /** 工具配置：
+   * - true = 全部内置工具
+   * - false = 无工具
+   * - string[] = 指定允许的工具名
+   * - ToolConfig = 详细配置（允许/禁止 + 每个工具个性化配置）
+   * - ToolDefinition[] = 直接使用自定义工具
+   */
+  tools?: boolean | string[] | ToolConfig | ToolDefinition[]
   /** 额外自定义工具（与内置工具合并） */
   extraTools?: ToolDefinition[]
   /** 最大工具调用轮数（默认 10） */

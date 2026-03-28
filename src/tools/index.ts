@@ -1,4 +1,4 @@
-import type { ToolDefinition } from "../types.js"
+import type { ToolDefinition, ToolConfig } from "../types.js"
 import { createBashTool } from "./bash.js"
 import { createGlobTool } from "./glob.js"
 import { createGrepTool } from "./grep.js"
@@ -10,16 +10,16 @@ import { createWriteTool } from "./write.js"
 /** 所有内置工具名 */
 export const BUILTIN_TOOL_NAMES = ["read", "write", "glob", "grep", "bash", "web_fetch", "web_search"] as const
 
-/** 创建全部内置工具 */
-export function createBuiltinTools(cwd: string): ToolDefinition[] {
+/** 创建全部内置工具，支持每个工具自定义配置 */
+export function createBuiltinTools(cwd: string, toolConfig?: ToolConfig): ToolDefinition[] {
   return [
     createReadTool(cwd),
     createWriteTool(cwd),
     createGlobTool(cwd),
     createGrepTool(cwd),
-    createBashTool(cwd),
-    createWebFetchTool(),
-    createWebSearchTool(),
+    createBashTool(cwd, toolConfig?.bash?.timeout),
+    createWebFetchTool(toolConfig?.web_fetch?.timeout),
+    createWebSearchTool(toolConfig?.web_search?.timeout),
   ]
 }
 
@@ -28,10 +28,11 @@ export function createBuiltinTools(cwd: string): ToolDefinition[] {
  * - true → 全部内置工具
  * - false / undefined → 无工具
  * - string[] → 按名称过滤内置工具
+ * - ToolConfig → 详细配置（允许/禁止 + 每个工具个性化配置）
  * - ToolDefinition[] → 直接使用自定义工具
  */
 export function resolveTools(
-  config: boolean | string[] | ToolDefinition[] | undefined,
+  config: boolean | string[] | ToolConfig | ToolDefinition[] | undefined,
   extraTools: ToolDefinition[] | undefined,
   cwd: string,
 ): ToolDefinition[] {
@@ -39,6 +40,18 @@ export function resolveTools(
 
   if (config === true) {
     tools = createBuiltinTools(cwd)
+  } else if (config && typeof config === "object" && !Array.isArray(config)) {
+    // ToolConfig 对象形式
+    const toolConfig = config as ToolConfig
+    tools = createBuiltinTools(cwd, toolConfig)
+    if (toolConfig.allow?.length) {
+      const names = new Set(toolConfig.allow)
+      tools = tools.filter((t) => names.has(t.name))
+    }
+    if (toolConfig.deny?.length) {
+      const names = new Set(toolConfig.deny)
+      tools = tools.filter((t) => !names.has(t.name))
+    }
   } else if (Array.isArray(config)) {
     if (config.length > 0 && typeof config[0] === "string") {
       const names = new Set(config as string[])

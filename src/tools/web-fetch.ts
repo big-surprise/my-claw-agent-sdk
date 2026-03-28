@@ -1,6 +1,6 @@
 import type { ToolDefinition } from "../types.js"
 
-export function createWebFetchTool(): ToolDefinition {
+export function createWebFetchTool(timeout = 15_000): ToolDefinition {
   return {
     name: "web_fetch",
     description: "Fetch content from a URL. Returns the text content of the page.",
@@ -15,7 +15,7 @@ export function createWebFetchTool(): ToolDefinition {
       const url = params.url as string
       const res = await fetch(url, {
         headers: { "User-Agent": "my-claw-agent-sdk/0.1" },
-        signal: AbortSignal.timeout(15_000),
+        signal: AbortSignal.timeout(timeout),
       })
 
       if (!res.ok) {
