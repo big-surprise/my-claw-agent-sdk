@@ -10,6 +10,7 @@ export type {
   AgentConfig,
   RunResult,
   ToolStep,
+  ToolConfig,
   ToolDefinition,
   StreamChunk,
   ProviderConfig,
