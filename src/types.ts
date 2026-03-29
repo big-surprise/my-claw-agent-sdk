@@ -18,11 +18,20 @@ export interface ToolConfig {
   /** 禁止这些工具（按名称） */
   deny?: string[]
   /** bash 工具配置 */
-  bash?: { timeout?: number }
+  bash?: {
+    /** Command execution timeout in milliseconds */
+    timeout?: number
+  }
   /** web_fetch 工具配置 */
-  web_fetch?: { timeout?: number }
+  web_fetch?: {
+    /** Request timeout in milliseconds */
+    timeout?: number
+  }
   /** web_search 工具配置 */
-  web_search?: { timeout?: number }
+  web_search?: {
+    /** Search timeout in milliseconds */
+    timeout?: number
+  }
 }
 
 /** Agent 创建配置 */
